@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { Router, Route, Routes, Navigate } from 'react-router-dom';
-import Navigation from './components/collab/Navigation';
-import Login from './components/collab/Login';
-import Whiteboard from './components/collab/Whiteboard';
-import Chat from './components/collab/Chat';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
 import Sidebar from './components/pages/Sidebar';
 import ProductStock from './components/pages/ProductStock';
@@ -11,29 +7,13 @@ import ProductForm from './components/pages/ProductForm';
 import Dashboard from './components/pages/Dashboard';
 import MainLayout from './components/pages/MainLayout';
 import ShopPage from './components/cart/ShopPage';
-import CartData from './components/cart/CartData';
 import { useSelector } from 'react-redux';
 import Favorites from './components/pages/Favorites'
 import Inbox from './components/pages/Inbox'
 import OrderList from './components/pages/OrderList'
 
 
-const userRole = "admin"; // or "user"
-
-// const { isLoggedIn } = useSelector((state) => state.auth);
-
-// const PrivateRoute = ({ element, allowedRoles }) => {
-//   if (!isLoggedIn) {
-//     return <Navigate to="/auth" replace />;
-//   }
-
-//   return allowedRoles.includes(userRole) ? element : <Navigate to="/auth" replace />;
-// };
-
-// const PublicRoute = ({ element }) => {
-//   return element; // Always accessible, even without authentication
-// };
-
+const userRole = "admin";
 
 const PrivateRoute = ({ element, allowedRoles }) => {
   return allowedRoles.includes(userRole) ? element : <Navigate to="/auth" replace />;
