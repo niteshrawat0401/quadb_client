@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import AuthForm from './components/AuthForm';
-import Sidebar from './components/pages/Sidebar';
 import ProductStock from './components/pages/ProductStock';
 import ProductForm from './components/pages/ProductForm';
 import Dashboard from './components/pages/Dashboard';
