@@ -29,8 +29,8 @@ const Sidebar = () => {
         </NavLink>
       </nav>
       <div className="footer">
-        <NavLink to="/settings" >
-          Settings
+        <NavLink to="/auth" >
+          Login for User
         </NavLink>
       </div>
     </div>
