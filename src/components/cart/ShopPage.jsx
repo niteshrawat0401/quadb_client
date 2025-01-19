@@ -52,7 +52,7 @@ const ShopPage = () => {
             <div className="flex items-center gap-3">
               <img
                 src="/placeholder.svg"
-                alt="Admin"
+                alt=""
                 className="w-8 h-8 rounded-full"
               />
               <div>

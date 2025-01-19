@@ -12,8 +12,8 @@ export const signUpUser = (formData) => async (dispatch) => {
   try {
     const response = await axios.post(`${API_BASE_URL}auth/signup`, formData);
     dispatch(authSuccess(response.data));
-    localStorage.setItem("currentUser", JSON.stringify(response.data));
     localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("currentUser", JSON.stringify(response.data));
   } catch (error) {
     dispatch(authFailure(error.response?.data?.message || "Sign-up failed"));
   }
@@ -32,7 +32,8 @@ export const loginUser = (credentials) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem("isLoggedIn");
+  // localStorage.removeItem("isLoggedIn");
+  localStorage.setItem('isLoggedIn', 'false');
   localStorage.removeItem("currentUser");
   dispatch(logOutUser());
 };

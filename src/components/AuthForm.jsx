@@ -3,7 +3,7 @@ import { useState } from "react"
 import {Link, useNavigate} from 'react-router-dom'
 import { Eye } from 'lucide-react'
 import { useDispatch, useSelector } from "react-redux";
-import { signUpUser, loginUser, logout } from "../reudx/actions/action"; // Update the path as needed
+import { signUpUser, loginUser } from "../reudx/actions/action";
 
 export default function AuthForm() {
   const [isSignIn, setIsSignIn] = useState(true)
@@ -21,25 +21,26 @@ export default function AuthForm() {
   const navigate = useNavigate()
   const { isLoading, error } = useSelector((state) => state.auth);
 
-  console.log(formData)
-  console.log(error)
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignIn) {
-      dispatch(loginUser({ email: formData.email, password: formData.password }));
-         navigate('/productPage');
+      await dispatch(loginUser({ email: formData.email, password: formData.password }));
+  
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      if (isLoggedIn) {
+        navigate("/productpage");
+      }
     } else {
-      dispatch(signUpUser(formData));
-    if (!error) {
-      setIsSignIn(true);
-    }
+      await dispatch(signUpUser(formData));
+  
+      if (!error) {
+        setIsSignIn(true);
+      }
     }
   };
 
   const toggleAuthMode = () => {
     setIsSignIn(!isSignIn)
-    // Reset form data when switching modes
     setFormData({
       name: "",
       username: "",
@@ -52,21 +53,21 @@ export default function AuthForm() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left section with image */}
       <div className="hidden lg:flex lg:w-1/2 relative">
-        <image
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-16%20114307-pa26y0zl3clk1ByKN0GSwElglZBHAA.png"
+      <div className="w-full h-full">
+        <img
+          src='./chairImage.png'
           alt="Elegant grey armchair with cream throw blanket"
           fill
-          className="object-cover"
+          className=" object-cover rounded-lg"
           priority
         />
+        </div>
         <div className="absolute top-8 left-8">
           <h1 className="text-2xl font-medium">3legant.</h1>
         </div>
       </div>
 
-      {/* Right section with form */}
       <div className="w-full lg:w-1/2 px-6 py-8 lg:px-12 xl:px-16 flex flex-col justify-center">
         <div className="max-w-md w-full mx-auto space-y-8">
           <div className="lg:hidden">
@@ -117,7 +118,7 @@ export default function AuthForm() {
               <div>
                 <input
                   type="email"
-                  placeholder={isSignIn ? "Your username or email address" : "Email address"}
+                  placeholder={isSignIn ? "email address" : "Email address"}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -158,9 +159,6 @@ export default function AuthForm() {
                     Remember me
                   </label>
                 </div>
-                <Link href="/forgot-password" className="text-sm text-black hover:underline">
-                  Forgot password?
-                </Link>
               </div>
             ) : (
               <div className="flex items-center">
