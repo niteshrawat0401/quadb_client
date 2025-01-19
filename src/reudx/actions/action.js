@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiUrl from "../../config";
 
 const API_BASE_URL = "http://localhost:8080/";
 
@@ -10,7 +11,7 @@ export const logOutUser = () => ({ type: "LOG_OUT_USER" });
 export const signUpUser = (formData) => async (dispatch) => {
   dispatch(authRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}auth/signup`, formData);
+    const response = await axios.post(`${apiUrl}auth/signup`, formData);
     dispatch(authSuccess(response.data));
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("currentUser", JSON.stringify(response.data));
@@ -22,7 +23,7 @@ export const signUpUser = (formData) => async (dispatch) => {
 export const loginUser = (credentials) => async (dispatch) => {
   dispatch(authRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}auth/login`, credentials);
+    const response = await axios.post(`${apiUrl}auth/login`, credentials);
     dispatch(authSuccess(response.data));
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("currentUser", JSON.stringify(response.data));
@@ -32,7 +33,6 @@ export const loginUser = (credentials) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  // localStorage.removeItem("isLoggedIn");
   localStorage.setItem('isLoggedIn', 'false');
   localStorage.removeItem("currentUser");
   dispatch(logOutUser());

@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiUrl from "../../config";
 
 // Action Types
 export const FETCH_CART = "FETCH_CART";
@@ -12,7 +13,7 @@ const API_BASE_URL = "http://localhost:8080";
 // Action Creators
 export const fetchCart = ({userId}) => async (dispatch) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/product/cart/${userId}`);
+    const response = await axios.get(`${apiUrl}/product/cart/${userId}`);
     dispatch({ type: FETCH_CART, payload: response.data });
   } catch (error) {
     console.error("Error fetching cart:", error);
@@ -21,7 +22,7 @@ export const fetchCart = ({userId}) => async (dispatch) => {
 
 export const addToCart = (userId, productId, quantity) => async (dispatch) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/product/cart/${userId}`, {
+    const response = await axios.post(`${apiUrl}/product/cart/${userId}`, {
       userId,
       productId,
       quantity,
@@ -34,7 +35,7 @@ export const addToCart = (userId, productId, quantity) => async (dispatch) => {
 
 export const updateCart = (cartId, productId, quantity) => async (dispatch) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/product/cart/${cartId}`, {
+    const response = await axios.put(`${apiUrl}/product/cart/${cartId}`, {
       productId,
       quantity,
     });
@@ -46,7 +47,7 @@ export const updateCart = (cartId, productId, quantity) => async (dispatch) => {
 
 export const removeFromCart = (cartId, productId) => async (dispatch) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/product/cart/${cartId}/${productId}`);
+    const response = await axios.delete(`${apiUrl}/product/cart/${cartId}/${productId}`);
     dispatch({ type: REMOVE_FROM_CART, payload: response.data.cart });
   } catch (error) {
     console.error("Error removing from cart:", error);
