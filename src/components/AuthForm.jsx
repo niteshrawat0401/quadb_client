@@ -28,9 +28,7 @@ export default function AuthForm() {
     e.preventDefault();
     if (isSignIn) {
       dispatch(loginUser({ email: formData.email, password: formData.password }));
-      if (!error) {
          navigate('/productPage');
-      }
     } else {
       dispatch(signUpUser(formData));
     if (!error) {

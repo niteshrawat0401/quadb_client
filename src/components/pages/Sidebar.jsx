@@ -2,18 +2,8 @@ import React from 'react'
 import { NavLink } from "react-router-dom";
 import "../Sidebar.css";
 import { useDispatch, useSelector } from 'react-redux';
-import {logout}  from '../../reudx/actions/action'
 
 const Sidebar = ({role}) => {
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
-  if (role !== "admin") {
-    return null; // Hide sidebar for non-admins
-  }
   
   return (
     <div>
@@ -42,9 +32,6 @@ const Sidebar = ({role}) => {
       <div className="footer">
         <NavLink to="/settings" >
           Settings
-        </NavLink>
-        <NavLink onClick={handleLogout} to="/auth" >
-          Logout
         </NavLink>
       </div>
     </div>

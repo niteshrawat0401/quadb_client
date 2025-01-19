@@ -1,7 +1,6 @@
 import { useState } from "react"
-import { Search, Plus, ChevronDown, PenSquare, ImagePlus, LogOut, Settings } from 'lucide-react'
+import { Plus, ChevronDown, PenSquare, ImagePlus } from 'lucide-react'
 import axios from "axios"
-import {Link} from "react-router-dom"
 
 const ProductForm = () => {
     const [isAdditionalInfoOpen, setIsAdditionalInfoOpen] = useState(false);
@@ -73,12 +72,6 @@ const ProductForm = () => {
         <header className="bg-white border-b">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="relative w-96">
-              {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="search"
-                placeholder="Search"
-                className="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              /> */}
             </div>
             <div className="flex items-center gap-3">
               <img

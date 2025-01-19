@@ -3,20 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../reudx/actions/productAction";
 import { addToCart, fetchCart, removeFromCart, updateCart } from "../../reudx/actions/cartAction";
 import { ShoppingCart, X, Minus, Plus } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { logout } from '../../reudx/actions/action';
 
 const ShopPage = () => {
     const dispatch = useDispatch();
 
     const userData = JSON.parse(localStorage.getItem('currentUser'))
     const { products, loading, error } = useSelector((state) => state.product);
-    const { cartItems } = useSelector((state) => state?.cart);
+    const { cartItems, totalPrice } = useSelector((state) => state?.cart);
     const [isCartOpen, setIsCartOpen] = useState(false);
     console.log( cartItems?.products)
 
     useEffect(()=>{
-        dispatch(fetchProducts())
-        dispatch(fetchCart( {userId : userData?.user?._id}))
+      dispatch(fetchProducts())
+      dispatch(fetchCart( {userId : userData?.user?._id}))
     },[dispatch])
 
     const handleAddToCart = (productId) => {
@@ -25,22 +26,19 @@ const ShopPage = () => {
         dispatch(addToCart(userId, productId, quantity));
       };
 
-      const handleIncrement = (cartId, productId, quantity) => {
-        const newQuantity = quantity + 1;
-        console.log(`Incrementing: Cart ID: ${cartId}, Product ID: ${productId}, New Quantity: ${newQuantity}`);
+      const handleIncrement = (cartId, productId, currentQuantity) => {
+        const newQuantity = currentQuantity + 1;
         dispatch(updateCart(cartId, productId, newQuantity));
       };
       
-      const handleDecrement = (cartId, productId, quantity) => {
-        if (quantity > 1) {
-          const newQuantity = quantity - 1;
-          console.log(`Decrementing: Cart ID: ${cartId}, Product ID: ${productId}, New Quantity: ${newQuantity}`);
-          dispatch(updateCart(cartId, productId, newQuantity));
-        }
+      const handleDecrement = (cartId, productId, currentQuantity) => {
+        const newQuantity = currentQuantity > 1 ? currentQuantity - 1 : 1;
+        dispatch(updateCart(cartId, productId, newQuantity));
       };
-      
-      
 
+      const handleLogout = () => {
+        dispatch(logout());
+      };
 
     const toggleCart = () => setIsCartOpen(!isCartOpen);
 
@@ -58,8 +56,9 @@ const ShopPage = () => {
                 className="w-8 h-8 rounded-full"
               />
               <div>
-                <p className="text-sm font-medium">{userData?.user?.username}</p>
-                <p className="text-xs text-gray-500">User</p>
+                <p className="text-xs text-gray-500">User</p><p className="text-sm font-medium">
+                   {userData?.user?.username}</p>
+                <NavLink className="text-xs font-bold text-black cursor-pointer"  onClick={handleLogout} to="/auth" >Logout</NavLink>
               </div>
             </div>
           </div>
@@ -125,8 +124,7 @@ const ShopPage = () => {
         <div className="flex flex-col h-auto max-w-md mx-auto bg-white">
 
       {/* Cart Items */}
-      {
-        cartItems?.products?.length > 0  ?
+      {cartItems?.products?.length > 0  ?
       <div className="flex-1 overflow-auto p-4 space-y-6">
         {/* Black Tray Table */}
             {cartItems?.products?.map((items)=>{
@@ -148,7 +146,7 @@ const ShopPage = () => {
                 <h3 className="font-medium">{items?.productId?.title}</h3>
                 <p className="text-sm text-gray-500">Color: {items?.productId?.colors}</p>
               </div>
-              <button variant="ghost" size="icon" className="h-8 w-8" onClick={() => dispatch(removeFromCart(items._id))}>
+              <button variant="ghost" size="icon" className="h-8 w-8" onClick={() => dispatch(removeFromCart(cartItems?._id,items._id))}>
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -162,7 +160,7 @@ const ShopPage = () => {
                   <Plus className="h-4 w-4" />
                 </button>
               </div>
-              <span className="font-medium">${items?.productId?.price}</span>
+              <span className="font-medium">${items?.price === 0 ? items?.productId?.price :  items?.price}</span>
             </div>
           </div>
         </div>
@@ -180,11 +178,15 @@ const ShopPage = () => {
       <div className="border-t p-4 space-y-4">
         <div className="flex justify-between items-center">
           <span className="text-sm">Subtotal</span>
-          <span className="font-medium">$99.00</span>
+          <span className="font-medium">${totalPrice}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm">Tax</span>
+          <span className="font-medium">20</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="font-medium">Total</span>
-          <span className="font-medium">$234.00</span>
+          <span className="font-medium">${totalPrice + 20}</span>
         </div>
         <button className="w-full bg-black text-white hover:bg-black/90">
           Checkout

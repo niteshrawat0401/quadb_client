@@ -11,54 +11,38 @@ import Favorites from './components/pages/Favorites'
 import Inbox from './components/pages/Inbox'
 import OrderList from './components/pages/OrderList'
 
-
-const userRole = "admin";
-
-const PrivateRoute = ({ element, allowedRoles }) => {
-  return allowedRoles.includes(userRole) ? element : <Navigate to="/auth" replace />;
-};
-
 const App = () => {
+  const userRole = "admin";
+  
+  const PrivateRoute = ({ element, allowedRoles }) => {
+    return allowedRoles.includes(userRole) ? element : <Navigate to="/auth" replace />;
+  };
   return (
     <div className="app">
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Navigate to={userRole === "admin" ? "/dashboard" : "/productPage"} replace />} />
-          <Route path="/auth" element={<AuthForm />} />
-
-          <Route path="/" element={userRole === "admin" ? <MainLayout /> : <Navigate to="/productPage" replace />}>
-            {/* Admin-only routes */}
-            <Route path="/dashboard" element={<PrivateRoute allowedRoles={["admin"]} element={<Dashboard />} />} />
-            <Route path="/products" element={<PrivateRoute allowedRoles={["admin"]} element={<ProductForm />} />} />
-            <Route path="/productStock" element={<PrivateRoute allowedRoles={["admin"]} element={<ProductStock />} />} />
-            <Route path="/favorites" element={<PrivateRoute allowedRoles={["admin"]} element={<Favorites />} />} />
-            <Route path="/inbox" element={<PrivateRoute allowedRoles={["admin"]} element={<Inbox />} />} />
-            <Route path="/order-lists" element={<PrivateRoute allowedRoles={["admin"]} element={<OrderList />} />} />
-            
-
-            {/* User-only route */}
-            <Route path="/productPage" element={<PrivateRoute allowedRoles={["user", "admin"]} element={<ShopPage />} />} />
-          </Route>
-        </Routes>
-      </div>
-    </div>
-      // <div className="app">
+    <div className="content">
+      <Routes>
+        {/* Default route redirects based on role */}
+        <Route path="/" element={<Navigate to={userRole === "admin" ? "/dashboard" : "/productPage"} replace />} />
         
-      //   <div className="content">
-      //     <Routes>
-      //       <Route path='/' element={<MainLayout/>}>
-      //       <Route path="/dashboard" element={<Dashboard />} />
-      //       <Route path="/products" element={<ProductForm/>} />
-      //       <Route path="/auth" element={<AuthForm />} />
-      //       <Route path="/productStock" element={<ProductStock />} />
-      //       <Route path="/productPage" element={<ShopPage />} />
-      //       <Route path="/cart" element={<CartData />} />
-      //       </Route>
-      //     </Routes>
-      //   </div>
-      // </div>
+        {/* AuthForm route accessible by all */}
+        <Route path="/auth" element={<AuthForm />} />
+        
+        {/* Admin routes wrapped in MainLayout */}
+        <Route path="/" element={userRole === "admin" ? <MainLayout /> : <Navigate to="/productPage" replace />}>
+          <Route path="/dashboard" element={<PrivateRoute allowedRoles={["admin"]} element={<Dashboard />} />} />
+          <Route path="/products" element={<PrivateRoute allowedRoles={["admin"]} element={<ProductForm />} />} />
+          <Route path="/productStock" element={<PrivateRoute allowedRoles={["admin"]} element={<ProductStock />} />} />
+          <Route path="/favorites" element={<PrivateRoute allowedRoles={["admin"]} element={<Favorites />} />} />
+          <Route path="/inbox" element={<PrivateRoute allowedRoles={["admin"]} element={<Inbox />} />} />
+          <Route path="/order-lists" element={<PrivateRoute allowedRoles={["admin"]} element={<OrderList />} />} />
+        </Route>
+
+        {/* User-only route */}
+        <Route path="/productPage" element={<PrivateRoute allowedRoles={["user", "admin"]} element={<ShopPage />} />} />
+      </Routes>
+    </div>
+  </div>
   );
 };
 
 export default App;
-
