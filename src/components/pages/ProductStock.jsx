@@ -16,7 +16,7 @@ const ProductStock = () => {
   });
 
   const fetchProducts = async () => {
-    await axios.get('http://localhost:8080/product/products')
+    await axios.get('https://quadb-server.onrender.com/product/products')
       .then((res) => {
         console.log(res?.data);
         setProductData(res?.data);
@@ -58,7 +58,7 @@ const ProductStock = () => {
 
   const handleSaveEdit = async (productId) => {
     try {
-      const response = await axios.put(`http://localhost:8080/product/products/${productId}`, editForm);
+      const response = await axios.put(`https://quadb-server.onrender.com/product/products/${productId}`, editForm);
       if (response.status === 200) {
         toast.success('Product updated successfully');
         fetchProducts();
@@ -71,7 +71,7 @@ const ProductStock = () => {
   };
 
   const handleDelete = async (productId) => {
-    await axios.delete(`http://localhost:8080/product/products/${productId}`)
+    await axios.delete(`https://quadb-server.onrender.com/product/products/${productId}`)
       .then((res) => {
         if (res.status !== 200) {
           throw new Error('Failed to delete product');

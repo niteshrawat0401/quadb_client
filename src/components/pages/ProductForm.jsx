@@ -49,7 +49,7 @@ const ProductForm = () => {
       };
   
       try {
-        const response = await axios.post("http://localhost:8080/product/products",dataToSubmit);
+        const response = await axios.post("https://quadb-server.onrender.com/product/products",dataToSubmit);
         console.log("Product added successfully:", response.data);
         setFormData({
           title: "",
