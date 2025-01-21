@@ -182,6 +182,7 @@ const ProductForm = () => {
                   Add colors <ChevronDown className="w-4 h-4 ml-2" />
                 </button> :
                 <select onChange={(e) => setFormData({ ...formData, colors: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Color</option>
                     <option value="Red">Red</option>
                     <option value="Blue">Blue</option>
                     <option value="Yellow">Yellow</option>

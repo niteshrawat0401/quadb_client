@@ -92,7 +92,7 @@ const ProductStock = () => {
     if (editingId === product._id) {
       return (
         <input
-          type={field === 'price' ? 'number' : 'text'}
+          type={field === 'price' ||  field === 'mrp' ? 'number' : 'text'}
           value={editForm[field]}
           onChange={(e) => setEditForm({ ...editForm, [field]: e.target.value })}
           className="w-full px-2 py-1 border rounded"
@@ -101,11 +101,11 @@ const ProductStock = () => {
     }
     if (field === 'colors') {
       return product.colors === "Red" ? (
-        <div className='rounded bg-red-600 h-5 w-5 m-auto'></div>
+        <div className='rounded-3xl bg-red-600 h-5 w-5 m-auto'></div>
       ) : product.colors === 'Blue' ? (
         <div className='rounded-3xl h-5 w-5 bg-blue-700 m-auto'></div>
       ) : (
-        <div className='rounded bg-yellow-400 h-5 w-5 m-auto'></div>
+        <div className='rounded-3xl bg-yellow-400 h-5 w-5 m-auto'></div>
       );
     }
     if (field === 'price' || field === 'mrp') {

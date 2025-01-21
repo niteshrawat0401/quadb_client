@@ -132,7 +132,7 @@ const ShopPage = () => {
                     <>
                     <div key={items.productId._id} className="flex gap-4">
                     <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
-            <image
+            <img
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-16%20114307-pa26y0zl3clk1ByKN0GSwElglZBHAA.png"
               alt={items?.productId?.title}
                 width={96}

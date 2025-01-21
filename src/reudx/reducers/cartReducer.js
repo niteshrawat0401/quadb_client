@@ -6,7 +6,7 @@ import {
   } from "../actions/cartAction";
   
   const initialState = {
-    cartItems: null, // Stores the entire cart object
+    cartItems: null,
     totalQuantity: 0,
     totalPrice: 0,
   };
@@ -19,7 +19,7 @@ import {
       case REMOVE_FROM_CART:
         return {
           ...state,
-          cartItems: action.payload, // Store the full cart object
+          cartItems: action.payload,
           totalQuantity: action.payload.products.reduce((sum, item) => sum + item.quantity, 0),
           totalPrice: action.payload.products.reduce(
             (sum, item) => sum + item.productId.price * item.quantity,
