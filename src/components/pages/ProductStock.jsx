@@ -18,7 +18,7 @@ const ProductStock = () => {
   const fetchProducts = async () => {
     await axios.get('https://quadb-server.onrender.com/product/products')
       .then((res) => {
-        console.log(res?.data);
+        // console.log(res?.data);
         setProductData(res?.data);
       })
       .catch((error) => {
@@ -87,6 +87,23 @@ const ProductStock = () => {
         throw error;
       });
   };
+  const handleProductStatus = async (productId) => {
+    await axios.put(`http://localhost:8080/product/productsStatus/${productId}`)
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error('Failed to Change product status');
+        } else {
+          console.log(res.data.productsStatus[0].productStatus);
+          fetchProducts();
+          toast.success(`Product ${res.data.productsStatus[0].productStatus ? 'Activate' : 'Deactivate'} successfully`)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error);
+        toast.error('Failed to Change product status');
+        throw error;
+      });
+  };
 
   const renderTableCell = (product, field) => {
     if (editingId === product._id) {
@@ -131,6 +148,7 @@ const ProductStock = () => {
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Measurements</th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Color</th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -193,6 +211,13 @@ const ProductStock = () => {
                       </>
                     )}
                   </div>
+                </td>
+                <td className='text-center'>
+                <button
+                          onClick={() => handleProductStatus(product._id)}
+                          className={`${product?.productStatus ? 'text-green-600' : 'text-red-600'}`}
+                        >{product?.productStatus ? 'Activate' : 'Deactivate'}
+                        </button>
                 </td>
               </tr>
             ))}
